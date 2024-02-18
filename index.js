@@ -1,9 +1,10 @@
 const express=require('express')
-const cors=require('cors');
 const app=express()
+const cors=require('cors');
+
 app.use(express.static('dist'))
 app.use(express.json())
-app.use(cors)
+app.use(cors())
 
   
   let persons=[
@@ -38,9 +39,7 @@ app.get("/api/persons",(req,res)=>{
     console.log(2)
     res.json(persons)
 })
-app.get("/",(req,res)=>{
-    res.send("123");
-})
+
 app.get('/info',(req,res)=>{
     res.send(`<p>Phonebook has info for ${persons.length} people</p>`)
 })
@@ -80,5 +79,5 @@ app.post('/api/persons',(req,res)=>{
 
 })
 
-const PORT=3001;
+const PORT = process.env.PORT || 3001
 app.listen(PORT,()=>console.log(`Server running on port ${PORT}`))
