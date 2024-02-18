@@ -44,9 +44,7 @@ app.post('/api/persons',(req,res)=>{
     if(!body.name || !body.number){
         return res.status(400).json({error:"content-missing"})
     }
-    if(persons.find(p=>p.name==body.name)){
-        return res.status(400).json({error:'person already exists'})
-    }
+  
     const person=new Person({
         name:body.name,
         number:body.number,
