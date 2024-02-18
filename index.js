@@ -1,3 +1,6 @@
+require('dotenv').config()
+
+
 const express=require('express')
 const app=express()
 const cors=require('cors');
@@ -5,7 +8,7 @@ const cors=require('cors');
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(cors())
-
+const Person=require('./models/person')
   
   let persons=[
     { 
@@ -36,8 +39,7 @@ app.use(cors())
 ]
 
 app.get("/api/persons",(req,res)=>{
-    console.log(2)
-    res.json(persons)
+    Person.find({}).then(persons=>res.json(persons))
 })
 
 app.get('/info',(req,res)=>{
@@ -79,5 +81,5 @@ app.post('/api/persons',(req,res)=>{
 
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT 
 app.listen(PORT,()=>console.log(`Server running on port ${PORT}`))
