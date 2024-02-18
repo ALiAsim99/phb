@@ -35,6 +35,7 @@ app.use(cors)
 ]
 
 app.get("/api/persons",(req,res)=>{
+    console.log(2)
     res.json(persons)
 })
 app.get("/",(req,res)=>{
@@ -53,7 +54,7 @@ app.get("/api/persons/:id",(req,res)=>{
     }
 })
 app.delete('/api/persons/:id',(req,res)=>{
-
+    console.log("delete");
     const id=Number(req.params.id);
     persons=persons.filter(p=>p.id!==id)
     res.status(204).end()
@@ -64,6 +65,7 @@ const generateId=()=>{
 }
 app.post('/api/persons',(req,res)=>{
     const body=req.body;
+    console.log("post")
     console.log(body)
     if(!body.name || !body.number){
         return res.status(400).json({error:"content-missing"})
