@@ -46,19 +46,20 @@ app.get('/info',(req,res)=>{
     res.send(`<p>Phonebook has info for ${persons.length} people</p>`)
 })
 app.get("/api/persons/:id",(req,res)=>{
-    const id=Number(req.params.id);
-    const find=persons.find(p=>p.id==id)
-    if(find){
-        res.json(find)
+    Person.findById(req.params.id)
+    .then(person=>{
+        if(persons){
+        res.json(person)
     }else{
         res.status(404).end()
     }
 })
+    
+})
 app.delete('/api/persons/:id',(req,res)=>{
-    console.log("delete");
-    const id=Number(req.params.id);
-    persons=persons.filter(p=>p.id!==id)
-    res.status(204).end()
+    Person.findByIdAndDelete(req.params.id)
+    .then(res=>res.status(204).end())
+   
 })
 const generateId=()=>{
     const maxId=persons.length>0?Math.max(...persons.map(p=>p.id)):0;
@@ -74,9 +75,14 @@ app.post('/api/persons',(req,res)=>{
     if(persons.find(p=>p.name==body.name)){
         return res.status(400).json({error:'person already exists'})
     }
-    body.id=generateId()
-    persons=persons.concat(body);
-    res.json(body);
+    const person=new Person({
+        name:body.name,
+        number:body.number,
+        id:generateId()
+    })
+    person.save(p=>{
+        res.json(p)
+    })
 
 
 })
